@@ -6,6 +6,7 @@ import json
 import codecs
 
 def MacinfoVendor(mac_address):
+    if mac_address == 'unknown': return 'onbekend'
     #API base url,you can also use https if you need
     url = "http://macvendors.co/api/"
 

@@ -1,5 +1,6 @@
 from API_vendors import MacinfoVendor
 
+#Class om subnet op te breken in aantal hosts die gescand moeten worden.
 class Subnet:
     def __init__(self, a, b, c, d, sm):
         self.o1= int(a)
