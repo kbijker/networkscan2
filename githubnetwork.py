@@ -7,7 +7,7 @@ dateTimeObj = datetime.now()
 def github():
     print("Files will be pushed to Github.")
 
-    os.system("git remote set-url origin git@github.com:kbijker/networkscan.git")
+    os.system("git remote set-url origin git@github.com:kbijker/networkscan2.git")
     os.system('git config --global user.name "kbijker"')
     os.system('git config --global user.email "k.e.bijker@pl.hanze.nl" ')
     os.system("git config --global --unset proxy.server.com")
