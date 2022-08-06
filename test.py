@@ -1,37 +1,17 @@
-from scapy.all import *
+import urllib.request as urllib2
+import json
+import codecs
 
-#host = '192.168.178.11'
-#resp = sr1(IP(dst=str(host))/ICMP(),inter=.1,timeout=1,retry=0,verbose=0)
-#print(resp)
-
-def scan(ip):
-   arp = ARP(pdst=ip)
-   # zet eenEther broadcast packet in elkaar
-   # ff:ff:ff:ff:ff:ff MAC address indicates broadcasting
-   ether = Ether(dst="ff:ff:ff:ff:ff:ff")
-   # stack them
-   packet = ether / arp
-
-   result = srp(packet, timeout=3, verbose=0)[0]
-
-   for sent, received in result:
-
-      mac = received.hwsrc
-   return mac
-def test(h):
-
-   ans,unans=srp(Ether(dst="ff:ff:ff:ff:ff:ff")/ARP(pdst=h),timeout=2)
-   antw = str(ans.__repr__())
-   print(antw)
-   if 'Other:1' in antw:
-       print(f'{h} is alive')
-   else: print(f'{h} is not use?')
-
-host = '192.168.178.1'
-live = test(host)
-host1 = '192.168.178.73/24'
-mac= scan(host1)
-print(mac)
+OUI_URL = "http://standards-oui.ieee.org/oui.txt"
 
 
-#ans.summary( lambda(s,r) : r.sprintf("%IP.src% is alive") )
+mac_address = '90:5c:44:f1:f7:36'
+url = f"https://www.macvendorlookup.com/api/v2/{mac_address}/"
+
+request = urllib2.Request(url)
+response = urllib2.urlopen( request )
+print(response)
+#reader = codecs.getreader("utf-8")
+obj = json.load(response)
+print(obj)
+#info = (obj['result']['company']+"<br/>")

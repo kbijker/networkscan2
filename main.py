@@ -2,6 +2,7 @@ from Diepte_scan import scan
 from API_vendors import MacinfoVendor
 from Subnet_handler import subnet_handler
 from Ping_Sweep import ping_sweep, scan
+from gathering_info import rapport
 
 ans1 = input('Deze scanner gebruiken voor een enkel IP adres (E) of een range (R) ').upper()
 if ans1 == 'E':
@@ -15,8 +16,9 @@ if ans1 == 'E':
 
 
 if ans1 == 'R':
+    info_hosts = {}
     print('Ping Sweep')
-    ip_address_mask = input('Geef het IP-adres/subnetmask(shorthand-notation), voorbeeld 1.1.1.1/16. ')
+    ip_address_mask = input('Geef een geldig IP-adres/subnetmask(shorthand-notation) uit de LAN , voorbeeld 1.1.1.1/16. ')
     subnet, hosts, subnetlist = subnet_handler(ip_address_mask)
     live_hosts = ping_sweep(subnet, hosts)
     #live_hosts = ping_sweep('192.168.178.', 24)
@@ -29,9 +31,10 @@ if ans1 == 'R':
             vendor = MacinfoVendor(macadd)
         except:
             pass
-        # hosts[IP] = (mac, vendor)
-        print(f'{ip} is gedetecteerd in dit netwerk met als mac: {macadd}, fabricant interface: {vendor}')
+        info_hosts[ip] = (macadd, vendor)
 
+        print(f'{ip} is gedetecteerd in dit netwerk met als mac: {macadd}, fabricant interface: {vendor}')
+    rapport(subnet, info_hosts)
 
 
 

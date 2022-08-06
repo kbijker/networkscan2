@@ -55,5 +55,6 @@ def ping_sweep(network, hosts):
     return Livehosts
 
 
-
+mac = scan('192.168.178.1')
+print(mac)
 #ping_sweep('192.168.178.', 254)
