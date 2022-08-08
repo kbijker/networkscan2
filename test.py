@@ -1,17 +1,40 @@
-import urllib.request as urllib2
-import json
-import codecs
-
-OUI_URL = "http://standards-oui.ieee.org/oui.txt"
+import requests
+from bs4 import BeautifulSoup
 
 
-mac_address = '90:5c:44:f1:f7:36'
-url = f"https://www.macvendorlookup.com/api/v2/{mac_address}/"
+mac = '90:5c:44:f1:f7:36'
 
-request = urllib2.Request(url)
-response = urllib2.urlopen( request )
-print(response)
-#reader = codecs.getreader("utf-8")
-obj = json.load(response)
-print(obj)
-#info = (obj['result']['company']+"<br/>")
+#URL = "https://udger.com/resources/mac-address-vendor-lookup?macaddress=00%3A01%3A02%3A01%3A02%3A03"
+
+def Udger(mac):
+    URL = f"https://udger.com/resources/mac-address-vendor-lookup?macaddress={mac}"
+    page = requests.get(URL)
+    soup = BeautifulSoup(page.content, "html.parser")
+    results = soup.find(lambda tag: tag.name=='table')
+
+    vendorinfo = []
+    for res in results:
+        tekst = str(res).split()
+        print(tekst)
+        for element in tekst:
+            if 'vendor' in element and 'name' in element or 'Country' in element:
+                vendorinfo.append(element)
+                print(element)
+            elif 'code' in element:
+                vendorinfo.append(element)
+                print(element)
+
+    #print('vendorinfo:',vendorinfo)
+    html_shit = ['</b>','</td>','<td>','</tr>','<tr>','</a>', '<b>', '<a>']
+    info_termen = []
+    for term in vendorinfo:
+        t2 = term
+        for code in html_shit:
+            t1 = t2.replace(code,'')
+            t2 = t1
+        info_termen.append(t2)
+    return info_termen
+
+#mac = '90:5c:44:f1:f7:36'
+#info = Udger(mac)
+#print(info)

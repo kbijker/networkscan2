@@ -42,6 +42,7 @@ def rapport(subnet, info_hosts):
           hostadapt = spacies(host_ip)
           print(f'{hostadapt} | mac {info[0]} | fabricant: {info[1]}')
           f.write(f'{hostadapt} | mac {info[0]} | fabricant: {info[1]}\n')
+          f.write(f'Extra info: {info[2]}\n')
 
 
 

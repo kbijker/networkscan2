@@ -3,6 +3,7 @@ from API_vendors import MacinfoVendor
 from Subnet_handler import subnet_handler
 from Ping_Sweep import ping_sweep, scan
 from gathering_info import rapport
+from GunMacLookup import Udger
 
 ans1 = input('Deze scanner gebruiken voor een enkel IP adres (E) of een range (R) ').upper()
 if ans1 == 'E':
@@ -31,9 +32,11 @@ if ans1 == 'R':
             vendor = MacinfoVendor(macadd)
         except:
             pass
-        info_hosts[ip] = (macadd, vendor)
+        if macadd == 'unknown': extra_info = 'mac address niet gevonden!'
+        else: extra_info = str(Udger(macadd))
+        info_hosts[ip] = (macadd, vendor, extra_info)
 
-        print(f'{ip} is gedetecteerd in dit netwerk met als mac: {macadd}, fabricant interface: {vendor}')
+        print(f'{ip} is gedetecteerd in dit netwerk met als mac: {macadd}, extra info: {extra_info}')
     rapport(subnet, info_hosts)
 
 
