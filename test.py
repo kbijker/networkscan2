@@ -1,40 +1,24 @@
-import requests
-from bs4 import BeautifulSoup
+import nmap
+import xml, logging
+
+def osdetect(ip):
+    # sys.stdout.write(Bcolors.RED + "\nOS：\n" + Bcolors.ENDC)
+    nm = nmap.PortScanner()
+    try:
+        result = nm.scan(hosts=ip, arguments='-sS -O -vv -n -T4 -p 80,22,443')
+        for k, v in result.get('scan').items():
+            if v.get('osmatch'):
+                for i in v.get('osmatch'):
+                    #console('OSdetect', ip, i.get('name') + '\n')
+                    return i.get('name')
+            else:
+                break
+    except (xml.etree.ElementTree.ParseError, nmap.nmap.PortScannerError):
+        pass
+    except Exception as e:
+        #console('OSdetect', ip, 'None\n')
+        logging.exception(e)
 
 
-mac = '90:5c:44:f1:f7:36'
-
-#URL = "https://udger.com/resources/mac-address-vendor-lookup?macaddress=00%3A01%3A02%3A01%3A02%3A03"
-
-def Udger(mac):
-    URL = f"https://udger.com/resources/mac-address-vendor-lookup?macaddress={mac}"
-    page = requests.get(URL)
-    soup = BeautifulSoup(page.content, "html.parser")
-    results = soup.find(lambda tag: tag.name=='table')
-
-    vendorinfo = []
-    for res in results:
-        tekst = str(res).split()
-        print(tekst)
-        for element in tekst:
-            if 'vendor' in element and 'name' in element or 'Country' in element:
-                vendorinfo.append(element)
-                print(element)
-            elif 'code' in element:
-                vendorinfo.append(element)
-                print(element)
-
-    #print('vendorinfo:',vendorinfo)
-    html_shit = ['</b>','</td>','<td>','</tr>','<tr>','</a>', '<b>', '<a>']
-    info_termen = []
-    for term in vendorinfo:
-        t2 = term
-        for code in html_shit:
-            t1 = t2.replace(code,'')
-            t2 = t1
-        info_termen.append(t2)
-    return info_termen
-
-#mac = '90:5c:44:f1:f7:36'
-#info = Udger(mac)
-#print(info)
+ip = '192.168.178.1'
+print(osdetect(ip))

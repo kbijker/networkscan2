@@ -26,7 +26,7 @@ def Udger(mac):
                 print(element)
 
        #print('vendorinfo:',vendorinfo)
-       html_shit = ['</b>','</td>','<td>','</tr>','<tr>','</a>', '<b>', '<a>']
+       html_shit = ['</b>','</td>','<td>','</tr>','<tr>','</a>', '<b>', '<a>', 'Country']
 
        for term in vendorinfo:
           t2 = term
