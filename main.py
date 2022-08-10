@@ -2,9 +2,9 @@ from Diepte_scan import scan
 from API_vendors import MacinfoVendor
 from Subnet_handler import subnet_handler
 from Ping_Sweep import ping_sweep, scan
-from gathering_info import rapport
+from gathering_info import rapport, rapport_host
 from GunMacLookup import Udger
-from nmap_scan import Port, osdetect
+from nmap_scan import port_scan, osdetect
 
 ans1 = input('Deze scanner gebruiken voor een enkel IP adres (E) of een range (R) ').upper()
 if ans1 == 'E':
@@ -12,15 +12,21 @@ if ans1 == 'E':
     print('Dit is een eenmalige scan en wordt niet vastgelegd.')
     ip =input('Geef IP-adres op: ')
     os_inf = ''
-
+    port_inf1 = []
     print(f'nmap searches for OS target {ip}:')
     os_inf= osdetect(ip)
     print(f'OS van {ip} is {os_inf}')
     print('...Voert een portscan....')
-    port_inf1 = Port(ip).port_scan()
-    print(port_inf1)
-    #for port in port_inf:
-     #       print(port)
+    port_inf1 = port_scan(ip)
+    host_info= {}
+    print('port_info:',port_inf1)
+    for port in port_inf1:
+        for k,v in port.items():
+           print(k, v)
+           host_info[k] = v
+    rapport_host(ip,host_info, os_inf)
+
+
 
 
 

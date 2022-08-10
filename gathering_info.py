@@ -44,6 +44,28 @@ def rapport(subnet, info_hosts):
           f.write(f'{hostadapt} | mac {info[0]} | fabricant: {info[1]}\n')
           f.write(f'Extra info: {info[2]}\n')
 
+def rapport_host(host, info_hosts, os):
+    datetime_object = datetime.datetime.now()
+    datum = str(datetime_object)
+    hosts_info = info_hosts
+    name = f'{host}_{datum[0:10]}'
+    path = 'c:/networkscan/'
+    #path = os.path.join('c:/networkscan')
+    #if os.path.isdir(path): print('map bestaat al.')
+    #else: os.mkdir(path)
+
+    Rapport = path + name + '.txt'
+    with open(Rapport, "w") as f:
+
+       f.write(f'Dieptescan op: {host}, op {datum} gemeten:\n')
+       f.write('----------------- -----------------------------------------\n')
+       f.write(f'OS_info: {os}\n')
+       for item_scan, info in info_hosts.items():
+          info = spacies(host)
+          print(f'{item_scan} |  {info[0]} | fabricant: {info[1]}')
+          f.write(f'{item_scan} | mac {info[0]} | fabricant: {info[1]}\n')
+
+
 
 
 
