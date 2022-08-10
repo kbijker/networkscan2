@@ -1,41 +1,32 @@
 import nmap, logging,xml
 import json
 
-class Port(object):
-    """docstring for Port"""
-    def __init__(self, ip):
-        self.state = 'unscan'
-        self.ip = ip
-        self.report = ''
-    def port_scan(self, ):
-       host = self.ip
+
+def port_scan(ip):
+
        nm = nmap.PortScanner()
-       self.state = 'scanning'
+
        try:
-          nm.scan(hosts=ip, arguments='-T4 -p 20-400 -sV -sT -Pn --host-timeout 3600')  # arguments='-T5 -p 1-65535 -sV -sT -Pn --host-timeout 3600'
-          ports = nm[host]['tcp'].keys()
+          nm.scan(hosts=ip, arguments='-T4 -p 20-500 -sV -sT -Pn --host-timeout 3600')  # arguments='-T5 -p 1-65535 -sV -sT -Pn --host-timeout 3600'
+          ports = nm[ip]['tcp'].keys()
           report_list = []
+
           for port in ports:
             report = {}
-            state = nm[host]['tcp'][port]['state']
-            service = nm[host]['tcp'][port]['name']
-            product = nm[host]['tcp'][port]['product']
-            report['port'] = port
-            report['state'] = state
-            report['service'] = service
-            report['product'] = product
-            if state == 'open':
-                report_list.append(report)
-          print(report_list)
-          self.state = 'scanned'
-          self.report = json.dumps(report_list)
-          return json.dumps(report_list)
+            state = nm[ip]['tcp'][port]['state']
+            service = nm[ip]['tcp'][port]['name']
+            product = nm[ip]['tcp'][port]['product']
+            report[port] = (state, service, product)
+
+            report_list.append(report)
+
+          return report_list
        except Exception as e:
          print(e)
 
 
 def osdetect(ip):
-  print(f'Portscan op host {ip}:')
+
   hostScan = nmap.PortScanner()
   try:
     result = hostScan.scan(hosts=ip, arguments='-sS -O -vv -n -T3')
@@ -57,8 +48,8 @@ def osdetect(ip):
 
 
 
-#ip = '192.168.178.1'
-#print(osdetect(ip))
+#ip = '192.168.178.73'
+#print(port_scan(ip))
 
 #Bron: https://www.programcreek.com/python/?code=vulscanteam%2Fvulscan%2Fvulscan-master%2Fportscan%2Fportscan.py
 #Bron: https://www.programcreek.com/python/?code=al0ne%2FVxscan%2FVxscan-master%2Fplugins%2FActiveReconnaissance%2Fosdetect.py

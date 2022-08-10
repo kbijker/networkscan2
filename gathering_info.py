@@ -44,6 +44,26 @@ def rapport(subnet, info_hosts):
           f.write(f'{hostadapt} | mac {info[0]} | fabricant: {info[1]}\n')
           f.write(f'Extra info: {info[2]}\n')
 
+def rapport_host(host, info_hosts, os):
+    datetime_object = datetime.datetime.now()
+    datum = str(datetime_object)
+    name = f'{host}_{datum[0:10]}'
+    path = 'c:/networkscan/'
+
+
+    Rapport = path + name + '.txt'
+    with open(Rapport, "w") as f:
+
+       f.write(f'Dieptescan op: {host}, op {datum} gemeten:\n')
+       f.write('----------------- -----------------------------------------\n')
+       f.write(f'OS_info: {os}\n')
+       f.write('Portscan:\n')
+       for port, info in info_hosts.items():
+
+          print(f'{port} |  state:{info[0]} | service: {info[1]} | application: {info[2]}')
+          f.write(f'{port} |  state:{info[0]} | service: {info[1]} | application: {info[2]}\n')
+
+
 
 
 

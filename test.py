@@ -14,7 +14,8 @@ class Port(object):
       nm = nmap.PortScanner()
       self.state = 'scanning'
       try:
-          nm.scan(hosts=ip, arguments='-T4 -p 20-400 -sV -sT -Pn --host-timeout 3600')  # arguments='-T5 -p 1-65535 -sV -sT -Pn --host-timeout 3600'
+          scan = nm.scan(hosts=ip, arguments='-T4 -p 20-400 -sV -sT -Pn --host-timeout 3600')  # arguments='-T5 -p 1-65535 -sV -sT -Pn --host-timeout 3600'
+          print(scan)
           ports = nm[host]['tcp'].keys()
           report_list = []
           for port in ports:
@@ -35,5 +36,8 @@ class Port(object):
       except Exception as e:
         print(e)
 
-ip = '192.168.178.1'
-scan = Port(ip).port_scan()
+ip = '192.168.178.73'
+nm = nmap.PortScanner()
+scan = nm.scan(hosts=ip, arguments='-T4 -sV')  # arguments='-T5 -p 1-65535 -sV -sT -Pn --host-timeout 3600'
+print(scan)
+#scan = Port(ip).port_scan()
