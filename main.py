@@ -6,14 +6,15 @@ from gathering_info import rapport, rapport_host
 from GunMacLookup import Udger
 from nmap_scan import port_scan, osdetect
 
-ans1 = 'E'
 
-#ans1 = input('Deze scanner gebruiken voor een enkel IP adres (E) of een range (R) ').upper()
+
+ans1 = input('Deze scanner gebruiken voor een enkel IP adres (E) of een range (R) ').upper()
+
 if ans1 == 'E':
     host_info = {}
     print('Scan starts.....')
-    #ip =input('Geef IP-adres op: ')
-    ip = '192.168.178.1'
+    ip =input('Geef IP-adres op: ')
+    #ip = '192.168.178.1' # experiment
     os_inf = ''
     port_inf1 = []
     print(f'nmap searches for OS target {ip}:')
